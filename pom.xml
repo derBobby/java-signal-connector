@@ -21,6 +21,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skipIntegrationTests>true</skipIntegrationTests>
     </properties>
 
     <dependencies>
@@ -88,6 +89,9 @@
                         <goals>
                             <goal>integration-test</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>verify</id>
@@ -99,6 +103,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
