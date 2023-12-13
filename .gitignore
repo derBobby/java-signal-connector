@@ -36,4 +36,4 @@ build/
 .DS_Store
 
 ### secret properties files ###
-/src/main/resources/signal.properties
+/src/main/resources/signal-test.properties
