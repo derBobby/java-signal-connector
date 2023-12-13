@@ -13,7 +13,7 @@ jobs:
     uses: derBobby/java-pipelines/.github/workflows/callable-mvn.yml@main
     with:
       mvn-stage: deploy
-      parameters: |
+      env:
         SIGNAL_API_ACTIVE=${{ secrets.SIGNAL_API_ACTIVE }}
         SIGNAL_API_ADDRESS=${{ secrets.SIGNAL_API_ADDRESS }}
         SIGNAL_API_USER=${{ secrets.SIGNAL_API_USER }}
