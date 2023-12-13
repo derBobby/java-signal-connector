@@ -13,6 +13,18 @@ jobs:
     uses: derBobby/java-pipelines/.github/workflows/callable-mvn.yml@main
     with:
       mvn-stage: deploy
+      env:
+        SIGNAL_API_ACTIVE=${{ secrets.SIGNAL_API_ACTIVE }}
+        SIGNAL_API_ADDRESS=${{ secrets.SIGNAL_API_ADDRESS }}
+        SIGNAL_API_USER=${{ secrets.SIGNAL_API_USER }}
+        SIGNAL_API_PASSWORD=${{ secrets.SIGNAL_API_PASSWORD }}
+        SIGNAL_API_PHONE_SENDER=${{ secrets.SIGNAL_API_PHONE_SENDER }}
+        SIGNAL_API_PHONE_RECEIVER=${{ secrets.SIGNAL_API_PHONE_RECEIVER }}
+        SIGNAL_API_PHONE_ADMIN=${{ secrets.SIGNAL_API_PHONE_ADMIN }}
+        SIGNAL_API_MESSAGE_PREFIX=${{ secrets.SIGNAL_API_MESSAGE_PREFIX }}
+        SIGNAL_API_RETRY_COUNT=${{ secrets.SIGNAL_API_RETRY_COUNT }}
+        SIGNAL_API_RETRY_INTERVAL=${{ secrets.SIGNAL_API_RETRY_INTERVAL }}
+
   codeql:
     needs: mvn-publish
     uses: derBobby/java-pipelines/.github/workflows/callable-codeql.yml@main
