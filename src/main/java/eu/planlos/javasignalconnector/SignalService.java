@@ -2,7 +2,6 @@ package eu.planlos.javasignalconnector;
 
 import eu.planlos.javasignalconnector.config.SignalApiConfig;
 import eu.planlos.javasignalconnector.model.SignalException;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -13,7 +12,7 @@ import reactor.util.retry.Retry;
 
 import java.time.Duration;
 
-import static eu.planlos.javasignalconnector.model.SignalException.*;
+import static eu.planlos.javasignalconnector.model.SignalException.IS_NULL;
 
 @Slf4j
 @Service
