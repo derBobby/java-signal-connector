@@ -98,6 +98,9 @@
                         <goals>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
