@@ -7,6 +7,23 @@ There is an [official library](https://github.com/signalapp/libsignal-service-ja
 * Send message to configured admin
 * Basic auth for containers e.g. behind Traefik reverse proxy
 
+## Usage
+Add Maven dependency
+```xml
+        <dependency>
+            <groupId>eu.planlos</groupId>
+            <artifactId>java-signal-connector</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+```
+
+Add Configuration class
+```java
+@Configuration
+@ComponentScan(basePackages = "eu.planlos.javasignalconnector")
+public class SignalConfig {}
+```
+
 ## Properties
 
 | Property                    | Type    | Description                               |
