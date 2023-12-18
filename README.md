@@ -52,13 +52,18 @@ class YourClass {
 ```
 
 Call service to send message and catch Exception if necessary
+
 ```java
+import eu.planlos.javasignalconnector.model.SignalException;
+
 class YourClass {
     yourMethod() {
         try {
             signalService.sendMessageToAdmin("Hello Admin!");
             signalService.sendMessageToRecipients("Hello configured recipients!");
-        } catch(SignalExceptio e) {
+        } catch (SignalException e) {
             // your code
-}   }   }
+        }
+    }
+}
 ```
