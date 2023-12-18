@@ -1,13 +1,41 @@
+
+[![Merge Dependabot PR](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/dependabot-automerge.yml) [![CD](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/test-and-publish.yml/badge.svg)](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/test-and-publish.yml)
+
 # java-signal-connector
 This spring boot library allows you to send messages via Signal messenger using the docker container [signal-cli-rest-api](https://github.com/bbernhard/signal-cli-rest-api)
 There is an [official library](https://github.com/signalapp/libsignal-service-java) from signal, you could also use that without the container.
 
 ## Features
-* Send message to list of configured recipients
-* Send message to configured admin
+* Send messages to a list of configured recipients
+* Send messages to a configured admin
 * Basic auth for containers e.g. behind Traefik reverse proxy
 
-## Usage
+# Usage
+
+## 
+
+Autowire the SignalService
+```java
+class YourClass {
+    @Autowired
+    private final SignalService signalService;
+}
+```
+
+Call service to send message and catch Exception if necessary
+```java
+class YourClass {
+    yourMethod() {
+        try {
+            signalService.sendMessageToAdmin("Hello Admin!");
+            signalService.sendMessageToRecipients("Hello configured recipients!");
+        } catch(
+        SignalExceptio e) {
+            // your code
+}   }   }
+```
+
+## Preparation
 Add Maven dependency
 ```xml
         <dependency>
@@ -38,9 +66,3 @@ public class SignalConfig {}
 | `signal.api.message-prefix` | String  | Prefix to be used for signal messages     | 
 | `signal.api.retry-count`    | Integer | Retry count in case of exception          | 
 | `signal.api.retry-interval` | Integer | Interval for retries in case of exception | 
-
-## Status
-
-[![Merge Dependabot PR](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/dependabot-automerge.yml)
-
-[![CD](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/test-and-publish.yml/badge.svg)](https://github.com/derBobby/java-nextcloud-connector/actions/workflows/test-and-publish.yml)
