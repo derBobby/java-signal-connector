@@ -29,18 +29,24 @@ public class SignalConfig {}
 ```
 
 ## Properties setup
-| Property                    | Type    | Description                               |
-|-----------------------------|---------|-------------------------------------------|
-| `signal.api.active`         | Boolean | Enable/Disable usage of API               |
-| `signal.api.address`        | String  | URL of the signal-cli-rest-api container  |
-| `signal.api.user`           | String  | Basic auth username                       | 
-| `signal.api.password`       | String  | Basic auth password                       | 
-| `signal.api.phone-sender`   | String  | Phone number of message sender (+49xxxxx) | 
-| `signal.api.phone-receiver` | String  | Comma seperated values of phone numbers   | 
-| `signal.api.phone-admin`    | String  | Phone number of admin (+49xxxxx)          | 
-| `signal.api.message-prefix` | String  | Prefix to be used for signal messages     | 
-| `signal.api.retry-count`    | Integer | Retry count in case of exception          | 
-| `signal.api.retry-interval` | Integer | Interval for retries in case of exception | 
+| Property                      | Type    | Description                               |
+|-------------------------------|---------|-------------------------------------------|
+| `signal.api.active`           | Boolean | Enable/Disable usage of API               |
+| `signal.api.address`          | String  | URL of the signal-cli-rest-api container  |
+| `signal.api.user`             | String  | Basic auth username                       | 
+| `signal.api.password`         | String  | Basic auth password                       | 
+| `signal.api.phone-sender`     | String  | Phone number of message sender (+49xxxxx) | 
+| `signal.api.phone-recipients` | List    | Comma seperated values of phone numbers   | 
+| `signal.api.phone-admin`      | String  | Phone number of admin (+49xxxxx)          | 
+| `signal.api.message-prefix`   | String  | Prefix to be used for signal messages     | 
+| `signal.api.retry-count`      | Integer | Retry count in case of exception          | 
+| `signal.api.retry-interval`   | Integer | Interval for retries in case of exception | 
+
+### Examples
+
+```properties
+signal.api.phone-recipients=+4915000000,+4915000001,+4915000002
+```
 
 ## Use in your code
 Autowire the SignalService

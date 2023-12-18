@@ -11,17 +11,26 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
+import java.util.stream.Collectors;
 
+import static eu.planlos.javasignalconnector.SignalService.Recipient.ADMIN;
+import static eu.planlos.javasignalconnector.SignalService.Recipient.RECIPIENTS;
 import static eu.planlos.javasignalconnector.model.SignalException.IS_NULL;
 
 @Slf4j
 @Service
 public class SignalService {
 
-    public static final String SIGNAL_JSON = "{\"message\": \"%s\", \"number\": \"%s\", \"recipients\": [ \"%s\" ]}";
+    enum Recipient {
+        ADMIN,
+        RECIPIENTS
+    }
+
+    public static final String SIGNAL_JSON = "{\"message\": \"%s\", \"number\": \"%s\", \"recipients\": [ %s ]}";
 
     private final SignalApiConfig config;
     private final WebClient webClient;
+    private final String recipientsString;
 
     /*
      * Startup
@@ -29,6 +38,9 @@ public class SignalService {
     public SignalService(SignalApiConfig config, @Qualifier("SignalWebClient") WebClient webClient) {
         this.config = config;
         this.webClient = webClient;
+        this.recipientsString = config.phoneRecipients().stream()
+                .map(number -> "\"" + number + "\"")
+                .collect(Collectors.joining(","));
     }
 
     /*
@@ -37,17 +49,17 @@ public class SignalService {
 
     @Async
     public void sendMessageToAdmin(String message) {
-        sendMessage(message, config.phoneAdmin());
+        sendMessage(message, ADMIN);
     }
 
     @Async
     public void sendMessageToRecipients(String message) {
-        sendMessage(message, config.phoneReceiver());
+        sendMessage(message, RECIPIENTS);
     }
 
-    private void sendMessage(String message, String receiverCsv) {
+    private void sendMessage(String message, Recipient recipient) {
         try {
-            send(message, receiverCsv);
+            send(message, recipient);
             logNotificationOK();
         } catch (Exception e) {
             logNotificationError(e);
@@ -55,7 +67,7 @@ public class SignalService {
         }
     }
 
-    private void send(String message, String receiverCsv) {
+    private void send(String message, Recipient recipient) {
 
         if (!config.active()) {
             log.info("Signal notifications are disabled. Skip sending");
@@ -63,7 +75,7 @@ public class SignalService {
         }
         log.info("Signal notifications are enabled. Sending");
 
-        String jsonMessage = String.format(SIGNAL_JSON, prefixMessage(message), config.phoneSender(), receiverCsv);
+        String jsonMessage = buildJson(message, recipient);
 
         String apiResponse = webClient
                 .post()
@@ -87,6 +99,19 @@ public class SignalService {
      * HELPER
      */
 
+    private String buildJson(String message, Recipient recipient) {
+
+        //if(reciever==ADMIN)
+        String actualRecipient = config.phoneAdmin();
+        if (recipient == RECIPIENTS) {
+            actualRecipient = recipientsString;
+        }
+
+        String json = String.format(SIGNAL_JSON, prefixMessage(message), config.phoneSender(), actualRecipient);
+        log.info("Built message is: {}", json);
+        return json;
+    }
+
     private String prefixMessage(String message) {
         return String.format("%s\\n%s", config.messagePrefix(), message);
     }
@@ -97,7 +122,7 @@ public class SignalService {
 
     private void logNotificationError(Exception e) {
         log.error("Notification could not been sent: {}", e.getMessage());
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             e.printStackTrace();
         }
     }

@@ -37,3 +37,4 @@ build/
 
 ### secret properties files ###
 /src/main/resources/application-IT.properties
+/src/main/resources/application.properties
