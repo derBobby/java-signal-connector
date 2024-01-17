@@ -2,6 +2,7 @@ package eu.planlos.javasignalconnector;
 
 import eu.planlos.javasignalconnector.config.SignalApiConfig;
 import eu.planlos.javasignalconnector.model.SignalException;
+import eu.planlos.javaspringwebutilities.web.WebClientRetryFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -86,7 +87,10 @@ public class SignalService {
                 .bodyValue(jsonMessage)
                 .retrieve()
                 .bodyToMono(String.class)
-                .retryWhen(Retry.fixedDelay(config.retryCount(), Duration.ofSeconds(config.retryInterval())))
+                .retryWhen(Retry
+                        .fixedDelay(config.retryCount(), Duration.ofSeconds(config.retryInterval()))
+                        .filter(WebClientRetryFilter::shouldRetry)
+                )
                 .doOnError(error -> log.error("Sending notification has failed."))
                 .block();
         if (apiResponse != null) {
