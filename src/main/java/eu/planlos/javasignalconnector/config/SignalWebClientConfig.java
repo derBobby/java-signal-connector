@@ -1,5 +1,7 @@
 package eu.planlos.javasignalconnector.config;
 
+import eu.planlos.javaspringwebutilities.web.WebClientRequestFilter;
+import eu.planlos.javaspringwebutilities.web.WebClientResponseFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +24,9 @@ public class SignalWebClientConfig {
 
         return WebClient.builder()
                 .baseUrl(apiConfig.address())
-                //TODO
-//                .filter(WebClientRequestFilter.logRequest())
-//                .filter(WebClientResponseFilter.logResponse())
-//                .filter(WebClientResponseFilter.handleError())
+                .filter(WebClientRequestFilter.logRequest())
+                .filter(WebClientResponseFilter.logResponse())
+                .filter(WebClientResponseFilter.handleError())
                 .filter(ExchangeFilterFunctions.basicAuthentication(apiConfig.user(), apiConfig.password()))
                 .defaultHeaders(httpHeaders -> httpHeaders.set(HttpHeaders.ACCEPT, "application/json"))
                 .build();
