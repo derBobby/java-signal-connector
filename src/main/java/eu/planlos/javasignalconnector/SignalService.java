@@ -31,6 +31,7 @@ public class SignalService {
     private final SignalApiConfig config;
     private final WebClient webClient;
     private final String recipientsString;
+    private final String adminString;
 
     /*
      * Startup
@@ -41,6 +42,7 @@ public class SignalService {
         this.recipientsString = config.phoneRecipients().stream()
                 .map(number -> "\"" + number + "\"")
                 .collect(Collectors.joining(","));
+        this.adminString = String.format("\"%s\"", config.phoneAdmin());
     }
 
     /*
@@ -101,8 +103,8 @@ public class SignalService {
 
     private String buildJson(String message, Recipient recipient) {
 
-        //if(reciever==ADMIN)
-        String actualRecipient = config.phoneAdmin();
+        // if(recipient==ADMIN)
+        String actualRecipient = adminString;
         if (recipient == RECIPIENTS) {
             actualRecipient = recipientsString;
         }
