@@ -72,13 +72,14 @@ public class SignalService {
 
     private void send(String message, Recipient recipient) {
 
+        String jsonMessage = buildJson(message, recipient);
+
         if (!config.active()) {
             log.info("Signal notifications are disabled. Skip sending");
+            log.info("This would have been the message: {}", jsonMessage);
             return;
         }
         log.info("Signal notifications are enabled. Sending");
-
-        String jsonMessage = buildJson(message, recipient);
 
         String apiResponse = webClient
                 .post()
