@@ -1,6 +1,7 @@
 package eu.planlos.javasignalconnector;
 
 import eu.planlos.javasignalconnector.config.SignalApiConfig;
+import eu.planlos.javasignalconnector.model.SignalErrorRetryFilter;
 import eu.planlos.javasignalconnector.model.SignalException;
 import eu.planlos.javaspringwebutilities.web.WebClientRetryFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -91,6 +92,7 @@ public class SignalService {
                 .retryWhen(Retry
                         .fixedDelay(config.retryCount(), Duration.ofSeconds(config.retryInterval()))
                         .filter(WebClientRetryFilter::shouldRetry)
+                        .filter(SignalErrorRetryFilter::shouldRetry)
                 )
                 .doOnError(error -> log.error("Sending notification has failed."))
                 .block();
