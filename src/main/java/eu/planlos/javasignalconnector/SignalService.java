@@ -93,8 +93,10 @@ public class SignalService {
                         .fixedDelay(config.retryCount(), Duration.ofSeconds(config.retryInterval()))
                         .filter(WebClientRetryFilter::shouldRetry)
                         .filter(SignalErrorRetryFilter::shouldRetry)
-                )
-                .doOnError(error -> log.error("Sending notification has failed."))
+                        .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> {
+                            throw new SignalException("Sending notification has failed: {}" + retrySignal.failure());
+                        }))
+                .doOnError(error -> log.error("Sending notification has failed: {}", error.getMessage()))
                 .block();
         if (apiResponse != null) {
             log.info("Response is: {}", apiResponse);
