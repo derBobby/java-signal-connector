@@ -133,8 +133,5 @@ public class SignalService {
 
     private void logNotificationError(Exception e) {
         log.error("Notification could not been sent: {}", e.getMessage());
-        if (log.isDebugEnabled()) {
-            e.printStackTrace();
-        }
     }
 }
