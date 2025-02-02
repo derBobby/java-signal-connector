@@ -7,18 +7,14 @@ public class SignalErrorRetryFilter {
     }
 
     public static boolean shouldRetry(Throwable throwable) {
-        if (!(throwable instanceof WebClientResponseException responseException)) {
-            return true;
-        }
-
-        if (isUntrustedIdentity(responseException)) {
-            return false;
+        if (throwable instanceof WebClientResponseException responseException) {
+            return isNotUntrustedIdentityIssue(responseException);
         }
 
         return true;
     }
 
-    private static boolean isUntrustedIdentity(WebClientResponseException responseException) {
-        return responseException.getMessage().contains("Untrusted Identity");
+    private static boolean isNotUntrustedIdentityIssue(WebClientResponseException responseException) {
+        return !responseException.getMessage().contains("Untrusted Identity");
     }
 }
