@@ -94,7 +94,7 @@ public class SignalService {
                         .filter(WebClientRetryFilter::shouldRetry)
                         .filter(SignalErrorRetryFilter::shouldRetry)
                         .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> {
-                            throw new SignalException("Sending notification has failed: {}" + retrySignal.failure());
+                            throw new SignalException(String.format("Sending notification has failed due to %s: %s", retrySignal.getClass(), retrySignal.failure()));
                         }))
                 .doOnError(error -> log.error("Sending notification has failed: {}", error.getMessage()))
                 .block();

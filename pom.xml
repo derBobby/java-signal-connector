@@ -6,7 +6,7 @@
 
     <groupId>eu.planlos</groupId>
     <artifactId>java-signal-connector</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>eu.planlos</groupId>
             <artifactId>java-spring-web-utilities</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.0</version>
         </dependency>
 
         <!-- Spring -->
